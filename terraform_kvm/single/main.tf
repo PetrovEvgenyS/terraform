@@ -12,7 +12,6 @@ resource "libvirt_domain" "vm" {
   memory    = var.vm.ram                    # Объем оперативной памяти в MB
   vcpu      = var.vm.cpu                    # Количество виртуальных процессоров
   arch      = var.vm.arch                   # Архитектура процессора
-  machine   = var.vm.machine                # Тип машины (например, q35)
   autostart = var.vm.autostart              # Автоматический запуск VM при перезагрузке хоста
 
   # Конфигурация CPU
