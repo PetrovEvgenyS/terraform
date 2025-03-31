@@ -5,7 +5,7 @@ This project deploys a virtual machine using libvirt provider on a KVM/QEMU hype
 ## Prerequisites
 - Terraform installed
 - Libvirt running on the system
-- Almalinux 9 template at /opt/kvm/almalinux.qcow2
+- Almalinux 9 template at /opt/kvm/images/almalinux.qcow2
 - Network bridge "br0"
 
 ## Images

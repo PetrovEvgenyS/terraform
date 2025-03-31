@@ -1,1 +1,4 @@
 *.txt
+*.tfstate
+*.tfstate.backup
+*.terraform.lock.hcl
