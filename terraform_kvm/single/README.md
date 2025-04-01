@@ -18,5 +18,5 @@ This project deploys a virtual machine using libvirt provider on a KVM/QEMU hype
 ## Enter the password via:
 
 ```bash
-export TF_VAR_password="мой_секретный_пароль"
+export TF_VAR_user_password="my_secrete_ password"
 ```

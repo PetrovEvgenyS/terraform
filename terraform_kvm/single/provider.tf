@@ -1,4 +1,4 @@
-# Конфигурация провайдера libvirt
+# Конфигурация провайдера libvirt.
 provider "libvirt" {
-  uri = "qemu:///system"  # URI для подключения к локальному hypervisor'у KVM/QEMU через системный сокет
+  uri = var.libvirt_uri  # URI для подключения к hypervisor'у KVM/QEMU.
 }
