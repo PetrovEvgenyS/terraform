@@ -1,11 +1,9 @@
-# Выходные данные: Имя созданной виртуальной машины
 output "vm_name" {
-  description = "Name of the created VM"            # Описание выходного значения
-  value       = libvirt_domain.vm.name              # Значение: имя VM из ресурса
+  description = "Name of the created VM"
+  value       = libvirt_domain.vm.name    # Имя VM в гипервизоре.
 }
 
-# Выходные данные: ID созданного диска
-output "disk_id" {
-  description = "ID of the created disk volume"     # Описание выходного значения
-  value       = libvirt_volume.vm_disk.id           # Значение: ID диска из ресурса
+output "vm_ip" {
+  value       = try(libvirt_domain.vm.network_interface[0].addresses[0], "IP not assigned yet") # Значение: первый IP-адрес интерфейса
+  description = "Interface IPs"                                                                 # или сообщение, если IP еще не назначен.
 }
