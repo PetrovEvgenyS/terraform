@@ -6,3 +6,6 @@
 
 ## terraform_kvm/single
 - Configuration for installing and configuring a single VM node on a KVM/QEMU hypervisor.
+
+## terraform_kvm/multi
+- Configuration for installing and configuring multiple virtual machines on a KVM/QEMU hypervisor.
