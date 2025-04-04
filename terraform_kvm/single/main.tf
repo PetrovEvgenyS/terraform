@@ -27,7 +27,7 @@ resource "libvirt_volume" "vm_disk" {
 resource "libvirt_cloudinit_disk" "cloudinit" {
   name      = "cloudinit.iso"           # Имя ISO-файла с конфигурацией cloud-init.
   pool      = libvirt_pool.pool.name    # Пул хранения для ISO-файла.
-  user_data = templatefile("${path.module}/templates/cloud-init.yaml", {  # Генерация cloud-init из шаблона.
+  user_data = templatefile("${path.module}/templates/cloud-init.tpl", {  # Генерация cloud-init из шаблона.
     hostname       = var.vm.name        # Имя хоста VM.
     user_login     = var.user_login     # Логин пользователя.
     user_password  = var.user_password  # Пароль пользователя.
