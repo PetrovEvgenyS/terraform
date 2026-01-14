@@ -1,15 +1,16 @@
 #!/bin/bash
 
-### Определение цветовых кодов ###
-ESC=$(printf '\033')
-RESET="${ESC}[0m"
-MAGENTA="${ESC}[35m"
+### ЦВЕТА ##
+ESC=$(printf '\033') RESET="${ESC}[0m" MAGENTA="${ESC}[35m" RED="${ESC}[31m" GREEN="${ESC}[32m"
 
-### Цветная функция для вывода ###
-magentaprint() { printf "${MAGENTA}%s${RESET}\n" "$1"; }
+### Функции цветного вывода ##
+magentaprint() { echo; printf "${MAGENTA}%s${RESET}\n" "$1"; }
+errorprint() { echo; printf "${RED}%s${RESET}\n" "$1"; }
+greenprint() { echo; printf "${GREEN}%s${RESET}\n" "$1"; }
 
-### Переменная с версией Terraform ###
-TF_VERSION="1.11.2"
+### Установим переменные ###
+TF_VERSION="1.14.3"
+TF_URL="https://hashicorp-releases.yandexcloud.net/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
 
 # ---------------------------------------------------------------------------------------- #
 
@@ -19,45 +20,23 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Проверка наличия unzip
-if ! command -v unzip &> /dev/null; then
-  magentaprint "Утилита unzip не найдена. Устанавливаю..."
-  dnf install -y unzip
-fi
+# Установка необходимых утилит
+magentaprint "Устанавливаю необходимые утилиты: unzip, wget..."
+dnf install -y unzip wget
 
-# Проверка наличия архива в текущей директории
-ARCHIVE="terraform_${TF_VERSION}_linux_amd64.zip"
-if [ ! -f "$ARCHIVE" ]; then
-  magentaprint "Файл $ARCHIVE не найден в текущей директории."
-  magentaprint "Проверьте переменную TF_VERSION в скрипте, возможно, версия указана не корректна."
-  exit 1
-fi
+# Загрузка и установка Terraform
+magentaprint "Загрузка Terraform версии $TF_VERSION..."
+wget "$TF_URL" -O /tmp/terraform.zip
 
-# Распаковка архива
-magentaprint "Распаковка $ARCHIVE..."
-unzip -o "$ARCHIVE"
+magentaprint "Распаковка Terraform..."
+unzip -o /tmp/terraform.zip -d /tmp
 
-# Проверка, что бинарник terraform извлечён
-if [ ! -f "terraform" ]; then
-  magentaprint "Ошибка: бинарник terraform версии $TF_VERSION не найден после распаковки."
-  exit 1
-fi
-
-# Перемещение бинарника в /usr/local/bin
-magentaprint "Перемещение terraform версии $TF_VERSION в /usr/local/bin..."
-mv terraform /usr/local/bin/terraform
-
-# Установка прав на выполнение
+magentaprint "Перемещение terraform в /usr/local/bin..."
+mv /tmp/terraform /usr/local/bin/terraform
 chmod +x /usr/local/bin/terraform
+chown root:root /usr/local/bin/terraform
 
-# Проверка установленной версии
-if command -v terraform &> /dev/null; then
-  magentaprint "Terraform версии $TF_VERSION успешно установлен!"
-  terraform -v
-else
-  magentaprint "Ошибка при установке Terraform версии $TF_VERSION."
-  exit 1
-fi
+rm -f /tmp/terraform.zip /tmp/LICENSE.txt
 
-magentaprint "Установка Terraform версии $TF_VERSION завершена."
-magentaprint "Установка завершена."
+magentaprint "Terraform установлен. Текущая версия:"
+terraform version
