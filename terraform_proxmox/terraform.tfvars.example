@@ -1,0 +1,20 @@
+# Скопируйте: cp terraform.tfvars.example terraform.tfvars
+# Секреты не коммитить — terraform.tfvars в .gitignore
+
+# --- Proxmox API ---
+pm_api_url          = "https://10.100.10.242:8006/api2/json"
+pm_api_token_id     = "root@pam!terraform"
+pm_api_token_secret = "замените-на-секрет-токена"
+pm_tls_insecure     = true
+
+# --- ВМ ---
+vm_count        = 2
+vm_name_prefix  = "vm"
+vm_target_node  = "pve-01"
+vm_template     = "cloud-init"
+vm_storage      = "nvme"
+
+vm_gateway      = "10.100.10.254"
+vm_network_cidr = "10.100.10.0/24"
+vm_first_host   = 131
+vm_first_id     = 400

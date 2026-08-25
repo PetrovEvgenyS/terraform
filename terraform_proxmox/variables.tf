@@ -1,3 +1,25 @@
+variable "pm_api_url" {
+  description = "URL API Proxmox (https://HOST:8006/api2/json)"
+  type        = string
+}
+
+variable "pm_api_token_id" {
+  description = "ID API-токена (user@realm!token-name)"
+  type        = string
+}
+
+variable "pm_api_token_secret" {
+  description = "Секрет API-токена Proxmox"
+  type        = string
+  sensitive   = true
+}
+
+variable "pm_tls_insecure" {
+  description = "Пропускать проверку TLS-сертификата Proxmox"
+  type        = bool
+  default     = true
+}
+
 variable "vm_count" {
   description = "Количество ВМ"
   type        = number

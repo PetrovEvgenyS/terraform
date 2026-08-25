@@ -8,7 +8,7 @@ resource "proxmox_vm_qemu" "vm" {
   bios        = "ovmf"
   agent       = 1
   scsihw      = "virtio-scsi-single"
-  vm_state    = "running"
+  power_state = "running"
   automatic_reboot = true
   memory      = 2048
 

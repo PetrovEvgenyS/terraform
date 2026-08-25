@@ -7,9 +7,45 @@
 ## Требования
 
 - Proxmox VE с доступом по API (порт 8006)
-- API-токен в Proxmox (Users > пользователь > API Tokens) или пароль пользователя
+- API-токен: **Datacenter > Permissions > API Tokens > Add**
+  - User: `root@pam` (или свой пользователь)
+  - Token ID: например `terraform` > полный ID: `root@pam!terraform`
+  - **Privilege Separation** — выключен (иначе токену нужны отдельные ACL)
+  - Expire: never (или срок по политике)
+  - Secret скопировать сразу (показывается один раз)
 - Terraform 1.x
 - Для подготовки шаблона: образ Ubuntu Cloud Image, место на ноде (например, `nvme`)
+
+---
+
+## Быстрый старт
+
+1. Один раз подготовьте cloud-init шаблон (§2 ниже).
+2. Создайте API-токен: **Datacenter > Permissions > API Tokens > Add** (см. Требования).
+3. Настройте доступ и параметры ВМ:
+
+```bash
+cd terraform_proxmox
+cp terraform.tfvars.example terraform.tfvars
+# заполните pm_api_url, pm_api_token_id, pm_api_token_secret
+# при необходимости поправьте vm_*
+```
+
+4. Запуск:
+
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+Удаление ВМ:
+
+```bash
+terraform destroy
+```
+
+Секреты храните только в `terraform.tfvars` (файл в `.gitignore`) или через `TF_VAR_pm_api_token_secret=...`.
 
 ---
 
@@ -107,19 +143,16 @@ qm template 9000
 
 ### 3.1 Подключение к Proxmox
 
-Сейчас URL API и токен заданы напрямую в `providers.tf`. **Не коммитьте реальные секреты** — вынесите в переменные:
+В `providers.tf` используются переменные — секреты задаются в `terraform.tfvars`:
 
-```hcl
-# providers.tf
-provider "proxmox" {
-  pm_api_url          = var.pm_api_url
-  pm_api_token_id     = var.pm_api_token_id
-  pm_api_token_secret = var.pm_api_token_secret
-  pm_tls_insecure     = true
-}
-```
+| Переменная            | Описание                                      | Обязательна |
+|-----------------------|-----------------------------------------------|-------------|
+| `pm_api_url`          | `https://HOST:8006/api2/json`                 | да          |
+| `pm_api_token_id`     | `user@realm!token-name`                       | да          |
+| `pm_api_token_secret` | секрет токена (`sensitive`)                   | да          |
+| `pm_tls_insecure`     | пропускать проверку TLS (по умолчанию `true`) | нет         |
 
-Передача значений:
+Альтернатива — env:
 
 ```bash
 export TF_VAR_pm_api_url="https://10.100.10.241:8006/api2/json"
@@ -127,9 +160,9 @@ export TF_VAR_pm_api_token_id="root@pam!terraform"
 export TF_VAR_pm_api_token_secret="ваш-секрет"
 ```
 
-Или через `terraform.tfvars` (добавьте `*.tfvars` в `.gitignore`).
+### 3.2 Переменные ВМ (terraform.tfvars)
 
-### 3.2 Переменные (variables.tf)
+Значения по умолчанию — в `variables.tf`. Переопределение — в `terraform.tfvars`:
 
 | Переменная         | Описание                          | По умолчанию     |
 |--------------------|-----------------------------------|------------------|
@@ -147,11 +180,6 @@ IP выдаются по порядку: первая ВМ — `cidrhost(10.100.
 
 > Маска в `ipconfig0` сейчас захардкожена как `/24` в `main.tf`, независимо от CIDR.
 
-В ресурсе `proxmox_vm_qemu` заданы `cipassword` и `sshkeys`. Для продакшена лучше вынести их в переменные и не коммитить в 
-репозиторий (например, через `tfvars` в `.gitignore`).
-
-IP выдаются по порядку: первая ВМ — `cidrhost(10.100.10.0/24, 131)` и т.д.
-
 ### 3.3 Параметры cloud-init (main.tf)
 
 Заданы напрямую в ресурсе `proxmox_vm_qemu`:
@@ -168,17 +196,12 @@ IP выдаются по порядку: первая ВМ — `cidrhost(10.100.
 
 ---
 
-## 4. Запуск
+## 4. Команды
 
 ```bash
 cd terraform_proxmox
 terraform init
-terraform plan   # просмотр изменений
-terraform apply  # создание ВМ
-```
-
-Уничтожение созданных ВМ:
-
-```bash
+terraform plan
+terraform apply
 terraform destroy
 ```

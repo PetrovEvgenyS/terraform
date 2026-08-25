@@ -50,6 +50,26 @@ terraform apply
 terraform destroy
 ```
 
+## Быстрый старт (Proxmox)
+
+Нужны: API-токен Proxmox и cloud-init шаблон на ноде. Подробнее — [`terraform_proxmox/README.md`](terraform_proxmox/README.md).
+
+```bash
+cd terraform_proxmox
+cp terraform.tfvars.example terraform.tfvars
+# укажите pm_api_url, pm_api_token_id, pm_api_token_secret и параметры ВМ
+
+terraform init
+terraform plan
+terraform apply
+```
+
+Удаление:
+
+```bash
+terraform destroy
+```
+
 ## Образы ОС (KVM)
 
 - [AlmaLinux Cloud](https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/)
