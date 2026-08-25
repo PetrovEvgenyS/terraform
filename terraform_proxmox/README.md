@@ -20,15 +20,15 @@
 
 ## Быстрый старт
 
-1. Один раз подготовьте cloud-init шаблон (§2 ниже).
+1. Один раз подготовьте cloud-init шаблон (раздел 2 ниже).
 2. Создайте API-токен: **Datacenter > Permissions > API Tokens > Add** (см. Требования).
 3. Настройте доступ и параметры ВМ:
 
 ```bash
 cd terraform_proxmox
 cp terraform.tfvars.example terraform.tfvars
-# заполните pm_api_url, pm_api_token_id, pm_api_token_secret
-# при необходимости поправьте vm_*
+# заполните pm_api_*, cipassword, sshkeys
+# при необходимости поправьте vm_* и cloud-init
 ```
 
 4. Запуск:
@@ -45,7 +45,7 @@ terraform apply
 terraform destroy
 ```
 
-Секреты храните только в `terraform.tfvars` (файл в `.gitignore`) или через `TF_VAR_pm_api_token_secret=...`.
+Секреты храните только в `terraform.tfvars` (файл в `.gitignore`) или через `TF_VAR_...`.
 
 ---
 
@@ -167,7 +167,7 @@ export TF_VAR_pm_api_token_secret="ваш-секрет"
 | Переменная         | Описание                          | По умолчанию     |
 |--------------------|-----------------------------------|------------------|
 | `vm_count`         | Количество создаваемых ВМ         | 2                |
-| `vm_name_prefix`   | Префикс имени (vm-01, vm-02, …)   | `"vm"`           |
+| `vm_name_prefix`   | Префикс имени (`vm-01`, `vm-02`, …) | `"vm"`           |
 | `vm_target_node`   | Имя ноды Proxmox                  | `"pve-01"`       |
 | `vm_template`      | Имя шаблона в Proxmox (clone)     | `"cloud-init"`   |
 | `vm_storage`       | Хранилище для дисков              | `"nvme"`         |

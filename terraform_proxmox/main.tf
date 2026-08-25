@@ -42,16 +42,12 @@ resource "proxmox_vm_qemu" "vm" {
     }
   }
 
-  os_type = "cloud-init"
-  ciuser     = "root"
-  cipassword = "Qq12345"
-  sshkeys = <<-EOF
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMShkftNYhOkXJfzc3FMu8yzL1dEfQ1D2+twugzaV61A user@HomePC01
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjQv07ai7Jn44s+gkrBg7HAy9F+2BKwcGifnAiyiEK/ root@main.local
-EOF
-  nameserver = "10.100.10.251 10.100.10.252 10.100.10.254"
-  searchdomain = "local"
-  ciupgrade = true
-  ipconfig0 = "ip=${cidrhost(var.vm_network_cidr, var.vm_first_host + count.index)}/24,gw=${var.vm_gateway}"
-
+  os_type      = "cloud-init"
+  ciuser       = var.ciuser
+  cipassword   = var.cipassword
+  sshkeys      = var.sshkeys
+  nameserver   = var.nameserver
+  searchdomain = var.searchdomain
+  ciupgrade    = var.ciupgrade
+  ipconfig0    = "ip=${cidrhost(var.vm_network_cidr, var.vm_first_host + count.index)}/24,gw=${var.vm_gateway}"
 }

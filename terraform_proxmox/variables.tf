@@ -74,3 +74,38 @@ variable "vm_first_id" {
   default     = 400
 }
 
+variable "ciuser" {
+  description = "Пользователь cloud-init"
+  type        = string
+  default     = "root"
+}
+
+variable "cipassword" {
+  description = "Пароль пользователя cloud-init"
+  type        = string
+  sensitive   = true
+}
+
+variable "sshkeys" {
+  description = "Публичные SSH-ключи (по одному на строку)"
+  type        = string
+}
+
+variable "nameserver" {
+  description = "DNS-серверы через пробел"
+  type        = string
+  default     = "10.100.10.251 10.100.10.252 10.100.10.254"
+}
+
+variable "searchdomain" {
+  description = "DNS search domain"
+  type        = string
+  default     = "local"
+}
+
+variable "ciupgrade" {
+  description = "Обновление пакетов при первом запуске (cloud-init)"
+  type        = bool
+  default     = true
+}
+
