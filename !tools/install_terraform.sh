@@ -9,7 +9,7 @@ errorprint() { echo; printf "${RED}%s${RESET}\n" "$1"; }
 greenprint() { echo; printf "${GREEN}%s${RESET}\n" "$1"; }
 
 ### Установим переменные ###
-TF_VERSION="1.14.5"
+TF_VERSION="1.15.9"
 TF_URL="https://hashicorp-releases.yandexcloud.net/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
 
 # ---------------------------------------------------------------------------------------- #

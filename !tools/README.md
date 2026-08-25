@@ -1,8 +1,15 @@
 # !tools
 
-Вспомогательные скрипты для работы с репозиторием Terraform.
+Скрипты установки (Linux amd64).
 
-| Файл | Описание |
-|------|----------|
-| **install_terraform.sh** | Установка Terraform (linux_amd64) из зеркала Yandex Cloud. Поддерживает AlmaLinux/RHEL/CentOS/Fedora/Rocky (dnf) и Ubuntu/Debian (apt). |
-| **install_plugin_libvirt.sh** | Установка провайдера [terraform-provider-libvirt](https://github.com/dmacvicar/terraform-provider-libvirt) (dmacvicar) в `~/.terraform.d/plugins/`. |
+| Файл | Что ставит |
+|------|------------|
+| `install_terraform.sh` | Terraform (зеркало Yandex Cloud) |
+| `install_opentofu.sh` | OpenTofu |
+| `install_plugin_libvirt.sh` | Провайдер libvirt (dmacvicar) |
+| `install_plugins_helm_k8s.sh` | Провайдеры Helm и Kubernetes |
+
+```bash
+bash !tools/install_terraform.sh
+bash !tools/install_plugin_libvirt.sh
+```
