@@ -119,6 +119,8 @@ qm set 9000 --scsi0 nvme:0,import-from=/tmp/noble-server-cloudimg-amd64.qcow2
 
 ### 2.4 Настроить cloud-init и загрузку
 
+Подключите cloud-init-диск (сам диск нужен, **значения в Proxmox можно не задавать** — IP, пользователь, пароль, SSH-ключи и DNS Terraform пропишет при создании ВМ):
+
 ```bash
 qm set 9000 --ide2 nvme:cloudinit
 qm set 9000 --boot order=scsi0
@@ -204,4 +206,25 @@ terraform init
 terraform plan
 terraform apply
 terraform destroy
+```
+
+---
+
+## 5. QEMU Guest Agent (после создания ВМ)
+
+После `terraform apply` можно установить агент внутри гостя — Proxmox будет видеть IP, uptime и сможет корректно выключать ВМ.
+
+**Ubuntu:**
+
+```bash
+apt update && apt full-upgrade
+apt install -y qemu-guest-agent
+systemctl enable --now qemu-guest-agent
+```
+
+**AlmaLinux:**
+
+```bash
+dnf install -y qemu-guest-agent
+systemctl enable --now qemu-guest-agent
 ```

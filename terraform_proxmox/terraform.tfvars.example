@@ -12,7 +12,7 @@ vm_count            = 3
 vm_name_prefix      = "node"
 vm_target_node      = "pve-01"
 vm_template         = "cloud-init"
-vm_storage          = "nvme"
+vm_storage          = "local"
 
 vm_gateway          = "10.100.10.254"
 vm_network_cidr     = "10.100.10.0/24"
@@ -23,7 +23,7 @@ vm_first_id         = 400
 ciuser              = "root"
 cipassword          = "замените-пароль"
 sshkeys             = <<-EOF
-ssh-ed25519 AAAA... your@key
+                        ssh-ed25519 AAAA... your@key
 EOF
 nameserver          = "10.100.10.254"
 searchdomain        = "local"

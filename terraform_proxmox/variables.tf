@@ -108,4 +108,3 @@ variable "ciupgrade" {
   type        = bool
   default     = true
 }
-
