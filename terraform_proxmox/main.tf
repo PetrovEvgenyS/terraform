@@ -5,7 +5,7 @@ resource "proxmox_vm_qemu" "vm" {
   target_node      = var.vm_target_node
   clone            = var.vm_template
   full_clone       = true
-  bios             = "ovmf"
+  bios             = "ovmf" # seabios
   agent            = 1
   scsihw           = "virtio-scsi-single"
   power_state      = "running"
